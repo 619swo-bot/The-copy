@@ -2,68 +2,197 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Art Loop Popup</title>
 <style>
 body {
   font-family: Arial, sans-serif;
   text-align: center;
-  margin-top: 100px;
-  background-color: #f0f0f0;
+  margin: 0;
+  background: #fafafa;
+  color: #333;
 }
+
+/* ---- Generic blog style ---- */
+header {
+  background: #333;
+  color: #fff;
+  padding: 20px 0;
+}
+.site-title {
+  margin: 0;
+}
+nav a {
+  color: #fff;
+  text-decoration: none;
+  margin: 0 10px;
+  font-weight: bold;
+}
+nav a:hover {
+  text-decoration: underline;
+}
+.blog-content {
+  max-width: 700px;
+  margin: 40px auto;
+  text-align: left;
+  padding: 0 20px;
+}
+.blog-content article {
+  margin-bottom: 30px;
+}
+.blog-content h2 {
+  color: #333;
+}
+footer {
+  text-align: center;
+  color: #666;
+  margin: 50px 0;
+  font-size: 0.9em;
+}
+
+/* ---- Popup styles ---- */
 .popup-bg {
+  display: none;
   position: fixed;
   top: 0; left: 0;
   width: 100%; height: 100%;
   background: rgba(0,0,0,0.6);
-  display: flex;
   justify-content: center; align-items: center;
   z-index: 1000;
 }
+
 .popup-content {
-  background: #fff;
+  position: relative;
+  background: #000; /* black popup */
+  color: #fff;
   padding: 30px;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0,0,0,0.3);
-  max-width: 400px;
+  max-width: 520px;
+  text-align: center;
 }
-button {
-  background: #4285f4;
-  border: none;
+
+/* Close "X" */
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 22px;
+  font-weight: bold;
+  color: #aaa;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.close-btn:hover {
   color: #fff;
-  padding: 10px 20px;
-  margin: 10px;
+}
+
+/* Rainbow animated text */
+.rainbow-text {
+  background: linear-gradient(90deg, red, orange, yellow, green, cyan, blue, violet);
+  background-size: 400% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: rainbowMove 4s linear infinite;
+  font-weight: bold;
+  font-size: 1.4em;
+}
+@keyframes rainbowMove {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
+
+/* Flashing green "PLAY NOW!" button */
+@keyframes flash {
+  0%, 100% { background-color: #28a745; }
+  50% { background-color: #00ff5e; }
+}
+.play-now-btn {
+  background: #28a745;
+  color: #fff;
+  border: none;
+  padding: 12px 24px;
+  font-size: 1em;
+  font-weight: bold;
   border-radius: 6px;
   cursor: pointer;
+  transition: background 0.25s;
+  margin-top: 15px;
+  animation: flash 1.2s infinite;
+}
+.play-now-btn:hover {
+  background: #218838;
 }
 </style>
 </head>
 <body>
 
-<h1>Welcome to the Art Page</h1>
-<p>Click below to experience the popup.</p>
-<button id="showPopup">Open Popup</button>
+<header>
+  <h1 class="site-title">The Copy</h1>
+  <nav>
+    <a href="#">Home</a>
+    <a href="#">Travel</a>
+    <a href="#">Lifestyle</a>
+    <a href="#">About</a>
+  </nav>
+</header>
 
-<div id="popup" class="popup-bg" style="display: none;">
+<main class="blog-content">
+  <article>
+    <h2>Exploring Hidden Gems in Small Towns</h2>
+    <p>Discover how unexpected corners offer the most memorable stories — from quiet cafés to forgotten trails on the edge of nowhere.</p>
+  </article>
+  <article>
+    <h2>Morning Routines That Actually Work</h2>
+    <p>We tried five different influencer routines so you don’t have to. Here’s how to find one that you can stick with past day three.</p>
+  </article>
+  <article>
+    <h2>Why Analog Photography Is Making a Comeback</h2>
+    <p>Film is dead, long live film. Here’s why the tactile joy of imperfect photos is reshaping the digital age aesthetic.</p>
+  </article>
+</main>
+
+<footer>
+  <p>© 2024 The Copy — All rights reserved.</p>
+</footer>
+
+<!-- Popup -->
+<div id="popup" class="popup-bg">
   <div class="popup-content">
-    <h2>You’re in the loop.</h2>
-    <p>This popup is part of the art experience.</p>
-    <button id="closePopup">Try to close</button>
+    <span id="closePopup" class="close-btn">&times;</span>
+    <h2 class="rainbow-text">!!99% OF PEOPLE CAN'T SOLVE THIS!!</h2>
+
+    <iframe
+      src="https://homegardenmergescape.netlify.app/"
+      width="500"
+      height="400"
+      style="border:none;"
+      allowfullscreen>
+    </iframe>
+
+    <button id="playNowBtn" class="play-now-btn">PLAY NOW!</button>
   </div>
 </div>
 
 <script>
 const popup = document.getElementById('popup');
-const showBtn = document.getElementById('showPopup');
 const closeBtn = document.getElementById('closePopup');
+const playNowBtn = document.getElementById('playNowBtn');
 
-// open popup
-showBtn.onclick = () => popup.style.display = 'flex';
+// Show popup automatically on load
+window.addEventListener('load', () => {
+  popup.style.display = 'flex';
+});
 
-// on "close", open same site in new tab and hide popup
+// Clicking the close X opens new tab
 closeBtn.onclick = () => {
   window.open(window.location.href, '_blank');
   popup.style.display = 'none';
+};
+
+// Clicking PLAY NOW opens new tab
+playNowBtn.onclick = () => {
+  window.open(window.location.href, '_blank');
 };
 </script>
 
